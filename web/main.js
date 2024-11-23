@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    eel.init()()
+ 
 
     $('.text').textillate({
         loop: true,
@@ -14,9 +14,6 @@ $(document).ready(function () {
 
     });
 
-    // Siri configuration
-
-    
     var siriWave = new SiriWave({
         container: document.getElementById("siri-container"),
         width: 800,
@@ -27,4 +24,22 @@ $(document).ready(function () {
         autostart: true
       });
 
-    
+    // Siri message animation
+    $('.siri-message').textillate({
+        loop: true,
+        sync: true,
+        in: {
+            effect: "fadeInUp",
+            sync: true,
+        },
+        out: {
+            effect: "fadeOutUp",
+            sync: true,
+        },
+
+    });
+
+
+
+
+});
