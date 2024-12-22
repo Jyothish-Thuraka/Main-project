@@ -34,7 +34,7 @@ def takecommand():
         time.sleep(2)
         
         
-       
+      
     except Exception as e:
         return ""
     
