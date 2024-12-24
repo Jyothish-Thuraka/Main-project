@@ -48,7 +48,7 @@ def allCommands():
         from engine.features import openCommand
         openCommand(query)
         print("i run")
-    elif "on youtube":
+    elif "on youtube" in query:
         from engine.features import PlayYoutube
         PlayYoutube(query)
     else:

@@ -11,9 +11,11 @@ cursor = conn.cursor()
 # cursor.execute(query)
 # conn.commit()
 
-query = "CREATE TABLE IF NOT EXISTS websites(id integer primary key, name VARCHAR(100), url VARCHAR(1000))"
-cursor.execute(query)
+# query = "CREATE TABLE IF NOT EXISTS websites(id integer primary key, name VARCHAR(100), url VARCHAR(1000))"
+# cursor.execute(query)
 
-query = "INSERT INTO websites VALUES (null,'Github', 'https://github.com/')"
-cursor.execute(query)
-conn.commit()
+# query = "INSERT INTO websites VALUES (null,'Github', 'https://github.com/')"
+# cursor.execute(query)
+# conn.commit()
+
+
