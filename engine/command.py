@@ -17,13 +17,12 @@ def speak(text):
 def takecommand():
 
     r = sr.Recognizer()
-
     with sr.Microphone() as source:
         print('listening....')
         eel.DisplayMessage('listening....')
         r.pause_threshold = 1
         r.adjust_for_ambient_noise(source)
-        audio = r.listen(source)
+        audio = r.listen(source,10,6)
 
     try:
         print('recognizing')
@@ -33,12 +32,13 @@ def takecommand():
         eel.DisplayMessage(query)
         time.sleep(2)
         
-        
-      
     except Exception as e:
         return ""
     
     return query.lower()
+
+# re=takecommand()
+# speak(re)
 @eel.expose
 def allCommands():
     query = takecommand()
