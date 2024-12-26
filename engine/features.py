@@ -4,10 +4,17 @@ from playsound import playsound
 import eel
 import os
 import sqlite3
+import pyaudio
+import struct
+import pvporcupine
 from engine.config import ASSISTANT_NAME
 from engine.command import speak
 import pywhatkit as kit
 import re
+import time
+import speech_recognition as sr
+
+from engine.help import extract_yt_term
 
 con = sqlite3.connect("Main.db")
 cursor = con.cursor()
@@ -72,10 +79,38 @@ def PlayYoutube(query):
         speak("Playing "+search_term+" on YouTube")
         kit.playonyt(search_term)
 
-def extract_yt_term(command):
-    # Define a regular expression pattern to capture the song name
-    pattern = r'play\s+(.*?)\s+on\s+youtube'
-    # Use re.search to find the match in the command
-    match = re.search(pattern, command, re.IGNORECASE)
-    # If a match is found, return the extracted song name; otherwise, return None
-    return match.group(1) if match else None
+
+def hotword():
+    ls='siri'
+    ls2="Siri"
+    ls3="Amazon"
+    r = sr.Recognizer()
+    while True:
+        with sr.Microphone() as source:
+            print('listening....')
+            #eel.DisplayMessage('listening....')
+            r.pause_threshold = 1
+            r.adjust_for_ambient_noise(source)
+            audio = r.listen(source)
+        try:
+            print('recognizing')
+            query = r.recognize_google(audio, language='en-in')
+            print(f"user said: {query}")
+
+            qu=str(query)
+            print(qu)
+            qu.lower()
+            print(type(qu))
+
+            if ls in qu or ls2 in qu or ls3 in qu:
+                print("hotword detected")
+                # pressing shorcut key win+j
+                import pyautogui as autogui
+                autogui.keyDown("win")
+                autogui.press("j")
+                time.sleep(2)
+                autogui.keyUp("win")
+            else:
+                print("hotword not detected")
+        except Exception as e:
+            print("error")

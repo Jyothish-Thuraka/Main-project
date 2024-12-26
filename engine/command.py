@@ -22,7 +22,7 @@ def takecommand():
         eel.DisplayMessage('listening....')
         r.pause_threshold = 1
         r.adjust_for_ambient_noise(source)
-        audio = r.listen(source,10,6)
+        audio = r.listen(source,6,10)
 
     try:
         print('recognizing')
@@ -41,17 +41,21 @@ def takecommand():
 # speak(re)
 @eel.expose
 def allCommands():
-    query = takecommand()
-    print(query)
 
-    if "open" in query:
-        from engine.features import openCommand
-        openCommand(query)
-        print("i run")
-    elif "on youtube" in query:
-        from engine.features import PlayYoutube
-        PlayYoutube(query)
-    else:
-        print("i dont run")
-    
+    try:
+        query = takecommand()
+        print(query)
+
+        if "open" in query:
+            from engine.features import openCommand
+            openCommand(query)
+            print("i run")
+        elif "on youtube" in query:
+            from engine.features import PlayYoutube
+            PlayYoutube(query)
+        else:
+            print("i dont run")
+    except:
+        print("error1")
+        
     eel.ShowHood()
