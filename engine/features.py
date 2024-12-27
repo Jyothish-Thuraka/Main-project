@@ -84,6 +84,7 @@ def hotword():
     ls='siri'
     ls2="Siri"
     ls3="Amazon"
+    ls4="open"
     r = sr.Recognizer()
     while True:
         with sr.Microphone() as source:
@@ -102,7 +103,8 @@ def hotword():
             qu.lower()
             print(type(qu))
 
-            if ls in qu or ls2 in qu or ls3 in qu:
+            if ls in qu or ls2 in qu or ls3 in qu or ls4 in qu:
+                from engine.command import speak
                 print("hotword detected")
                 # pressing shorcut key win+j
                 import pyautogui as autogui
