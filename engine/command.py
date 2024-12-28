@@ -53,6 +53,28 @@ def allCommands():
         elif "on youtube" in query:
             from engine.features import PlayYoutube
             PlayYoutube(query)
+
+        elif "send message" in query or "message" in query or  "call" in query or "video call" in query:
+            from engine.features import findContact, whatsApp
+            message=""
+            contact_no, name = findContact(query)
+            if(contact_no != 0):
+
+                    if "video call" in query:
+                        message = 'video call'
+  
+                                        
+                    elif "call" in query:
+                        message = 'call'
+                    else:
+                        message = 'message'
+                        speak("what message to send")
+                        query = takecommand()
+                        
+                                        
+                    whatsApp(contact_no, query, message, name)
+
+
         else:
             print("i dont run")
     except:
