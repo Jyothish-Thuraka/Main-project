@@ -40,11 +40,16 @@ def takecommand():
 # re=takecommand()
 # speak(re)
 @eel.expose
-def allCommands():
-
-    try:
+def allCommands(message=1):
+    if message==1:
         query = takecommand()
         print(query)
+        #eel.senderText(query)
+    else:
+        query = message
+        #eel.senderText(query)
+
+    try:
 
         if "open" in query:
             from engine.features import openCommand
@@ -62,8 +67,7 @@ def allCommands():
 
                     if "video call" in query:
                         message = 'video call'
-  
-                                        
+               
                     elif "call" in query:
                         message = 'call'
                     else:

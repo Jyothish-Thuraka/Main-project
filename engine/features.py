@@ -143,7 +143,6 @@ def findContact(query):
         return 0, 0
     
 def whatsApp(mobile_no, message, flag, name):
-    
 
     if flag == 'message':
         target_tab = 12
@@ -171,7 +170,7 @@ def whatsApp(mobile_no, message, flag, name):
 
     # Open WhatsApp with the constructed URL using cmd.exe
     subprocess.run(full_command, shell=True)
-    time.sleep(5)
+    time.sleep(4)
     subprocess.run(full_command, shell=True)
     
     pyautogui.hotkey('ctrl', 'f')
