@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
- 
+
 
     $('.text').textillate({
         loop: true,
@@ -22,7 +22,7 @@ $(document).ready(function () {
         amplitude: "1",
         speed: "0.30",
         autostart: true
-      });
+    });
 
     // Siri message animation
     $('.siri-message').textillate({
@@ -39,9 +39,9 @@ $(document).ready(function () {
 
     });
 
-      // mic button click event
+    // mic button click event
 
-      $("#MicBtn").click(function () { 
+    $("#MicBtn").click(function () {
         eel.playAssistantSound()
         $("#Oval").attr("hidden", true);
         $("#SiriWave").attr("hidden", false);
@@ -49,7 +49,7 @@ $(document).ready(function () {
     });
 
     function doc_keyUp(e) {
-      //func is used to make shortcut
+        //func is used to make shortcut
 
         if (e.key === 'j' && e.metaKey) {
             eel.playAssistantSound()
@@ -76,41 +76,41 @@ $(document).ready(function () {
 
     //toogle fucntion to hide and display mic and send button 
     function ShowHideButton(message) {
-            if (message.length == 0) {
-                $("#MicBtn").attr('hidden', false);
-                $("#SendBtn").attr('hidden', true);
-            }
-            else {
-                $("#MicBtn").attr('hidden', true);
-                $("#SendBtn").attr('hidden', false);
-            }
+        if (message.length == 0) {
+            $("#MicBtn").attr('hidden', false);
+            $("#SendBtn").attr('hidden', true);
+        }
+        else {
+            $("#MicBtn").attr('hidden', true);
+            $("#SendBtn").attr('hidden', false);
+        }
     }
     //ShowHideButton("hello")
 
     $("#chatbox").keyup(function () {
         let message = $("#chatbox").val();
         ShowHideButton(message)
-    
+
     });
-    
+
 
     $("#SendBtn").click(function () {
         let message = $("#chatbox").val()
         PlayAssistant(message)
-    
+
     });
 
-        // enter press event handler on chat box
-        $("#chatbox").keypress(function (e) {
-            key = e.which;
-            if (key == 13) {
-                let message = $("#chatbox").val()
-                PlayAssistant(message)
-            }
-        });
-    
+    // enter press event handler on chat box
+    $("#chatbox").keypress(function (e) {
+        key = e.which;
+        if (key == 13) {
+            let message = $("#chatbox").val()
+            PlayAssistant(message)
+        }
+    });
 
-    
+
+
 
 
 
