@@ -85,6 +85,7 @@ $(document).ready(function () {
             $("#SendBtn").attr('hidden', false);
         }
     }
+    
     //ShowHideButton("hello")
 
     $("#chatbox").keyup(function () {

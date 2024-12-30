@@ -3,7 +3,7 @@ import speech_recognition as sr
 import eel
 import time
 def speak(text):
-    #text = str(text)
+    text = str(text)
     engine = pyttsx3.init('sapi5')
     voices = engine.getProperty('voices')
     engine.setProperty('voice', voices[1].id)
@@ -80,8 +80,13 @@ def allCommands(message=1):
 
 
         else:
-            print("i dont run")
+            from engine.features import web_search_assistant
+            print("i run")
+            web_search_assistant(query)
+            
+            
     except:
         print("error1")
+        speak("some thing went wrong")
         
     eel.ShowHood()

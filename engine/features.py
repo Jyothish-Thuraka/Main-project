@@ -3,6 +3,7 @@ import logging
 from shlex import quote
 import subprocess
 import webbrowser
+from hugchat import hugchat
 from playsound import playsound
 import eel
 import os
@@ -15,7 +16,7 @@ import pywhatkit as kit
 import re
 import time
 import speech_recognition as sr
-
+from langchain_community.llms import CTransformers 
 from engine.config import ASSISTANT_NAME
 from engine.command import speak
 from engine.help import extract_yt_term, remove_words
@@ -170,7 +171,7 @@ def whatsApp(mobile_no, message, flag, name):
 
     # Open WhatsApp with the constructed URL using cmd.exe
     subprocess.run(full_command, shell=True)
-    time.sleep(4)
+    time.sleep(5)
     subprocess.run(full_command, shell=True)
     
     pyautogui.hotkey('ctrl', 'f')
@@ -180,3 +181,46 @@ def whatsApp(mobile_no, message, flag, name):
 
     pyautogui.hotkey('enter')
     speak(jarvis_message)
+
+
+# #chatbot raa lucha
+# def chatBot(query):
+#     user_input = query.lower()
+#     chatbot = hugchat.ChatBot(cookie_path="engine\\cookies.json")
+#     id = chatbot.new_conversation()
+#     chatbot.change_conversation(id)
+#     response =  chatbot.chat(user_input)
+#     print(response)
+#     speak(response)
+#     return response
+
+
+from langchain_community.llms import CTransformers
+#import CTransformers
+def web_search_assistant(query):
+    # Initialize the LLM
+    llm = CTransformers(
+        model='model\\llama-2-7b-chat.ggmlv3.q8_0.bin',
+        model_type='llama',
+        config={
+            'max_new_tokens': 256,
+            'temperature': 0.5  # Slightly increased temperature for more creative responses
+        }
+    )
+    
+    # Create a template for web search assistance
+    prompt_template = f"""You are a helpful web search assistant. Please help with the following quaery in 30-50 words. query:
+    
+Query: {query} 
+
+"""
+
+    # Get the response from the model
+    response = llm.predict(prompt_template)
+    print(response)
+    speak(response)
+
+    return response
+
+
+

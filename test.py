@@ -1,76 +1,38 @@
-import pvporcupine
-import pyaudio
-import struct
-import time
-import pyautogui
-import speech_recognition as sr
 
-# def hotword():
-#     porcupine = None
-#     paud = None
-#     audio_stream = None
-#     try:
-#         # pre trained keywords    
-#         porcupine = pvporcupine.create(keywords=["jarvis", "alexa"]) 
-#         paud = pyaudio.PyAudio()
-#         audio_stream = paud.open(
-#             rate=porcupine.sample_rate,
-#             channels=1,
-#             format=pyaudio.paInt16,
-#             input=True,
-#             frames_per_buffer=porcupine.frame_length
-#         )
-#         print("Listening for hotwords 'jarvis' or 'alexa'...")
-        
-#         while True:
-#             keyword = audio_stream.read(porcupine.frame_length)
-#             keyword = struct.unpack_from("h" * porcupine.frame_length, keyword)
-#             keyword_index = porcupine.process(keyword)there is
-#             if keyword_index >= 0:
-#                 print(f"Hotword detected! Index: {keyword_index}")
-#                 # pressing shortcut key win+j
-#                 pyautogui.keyDown("win")
-#                 pyautogui.press("j")
-#                 time.sleep(2)
-#     except:
-#         if porcupine is not None:
-#             porcupine.delete()
-#         if audio_stream is not None:
-#             audio_stream.close()
-#         if paud is not None:
-#             paud.terminate()
+from langchain_community.llms import CTransformers
+#import CTransformers
+def web_search_assistant(query):
+    # Initialize the LLM
+    llm = CTransformers(
+        model='model\\llama-2-7b-chat.ggmlv3.q8_0.bin',
+        model_type='llama',
+        config={
+            'max_new_tokens': 256,
+            'temperature': 0.5  # Slightly increased temperature for more creative responses
+        }
+    )
+    
+    # Create a template for web search assistance
+    prompt_template = f"""You are a helpful web search assistant. Please help with the following query:
+    
+Query: {query}
 
-def hotword():
-    ls='siri'
-    ls2="Siri"
-    r = sr.Recognizer()
-    with sr.Microphone() as source:
-        print('listening....')
-        #eel.DisplayMessage('listening....')
-        r.pause_threshold = 1
-        r.adjust_for_ambient_noise(source)
-        audio = r.listen(source)
-    try:
-        print('recognizing')
-        query = r.recognize_google(audio, language='en-in')
-        print(f"user said: {query}")
+"""
 
-        qu=str(query)
-        print(qu)
-        qu.lower()
-        print(type(qu))
+    # Get the response from the model
+    response = llm.predict(prompt_template)
+    return response
 
-        if ls in qu or ls2 in qu:
-            print("hotword detected")
-            # pressing shorcut key win+j
-            import pyautogui as autogui
-            autogui.keyDown("win")
-            autogui.press("j")
-            time.sleep(2)
-            autogui.keyUp("win")
-        else:
-            print("hotword not detected")
-    except Exception as e:
-        print("error")
-hotword()
- 
+# Example usage
+def main():
+    while True:
+        user_query = input("\nEnter your search query (or 'quit' to exit): ")
+        if user_query.lower() == 'quit':
+            break
+            
+        print("\nAssistant Response:")
+        response = web_search_assistant(user_query)
+        print(response)
+
+if __name__ == "__main__":
+    main()
