@@ -31,23 +31,15 @@ def playAssistantSound():
     playsound(music_dir)
 
 def openCommand(query):
+
     query = query.replace(ASSISTANT_NAME, "")
     query = query.replace("open", "")
     query.lower()
-
     app_name = query.strip()
     if app_name != "":
+    
 
         try:
-            cursor.execute(
-                'SELECT path FROM sys_command WHERE name IN (?)', (app_name,))
-            results = cursor.fetchall()
-
-            if len(results) != 0:
-                speak("Opening "+query)
-                os.startfile(results[0][0])
-
-            elif len(results) == 0: 
                 cursor.execute(
                 'SELECT url FROM websites WHERE name IN (?)', (app_name,))
                 results = cursor.fetchall()
@@ -63,16 +55,14 @@ def openCommand(query):
                 #     except:
                 #         speak("not found")
                 else:
-                    speak(f"Opening {query}")
-                    try:
-                        os.startfile(query)
-                    except FileNotFoundError:
-                        speak("Application not found")
-                    except OSError:
-                        speak("Unable to open the application")
-                    except Exception as e:
-                        speak("An unexpected error occurred")
-                        logging.error(f"Unexpected error: {str(e)}")
+                        speak(f"Opening {query}")
+                        query = query.replace("open", "")
+                        pyautogui.press("super")
+                        pyautogui.typewrite(query)
+                        pyautogui.sleep(2)
+                        pyautogui.press("enter")
+
+
                 
         except:
             speak("some thing went wrong")
@@ -224,3 +214,33 @@ Query: {query}
 
 
 
+# phone
+def makeCall(name, mobileNo):
+    mobileNo =mobileNo.replace(" ", "")
+    speak("Calling "+name)
+    command = 'adb shell am start -a android.intent.action.CALL -d tel:'+mobileNo
+    os.system(command)
+
+def sendMessage(message, mobileNo, name):
+    from engine.help import replace_spaces_with_percent_s, goback, keyEvent, tapEvents, adbInput
+    message = replace_spaces_with_percent_s(message)
+    mobileNo = replace_spaces_with_percent_s(mobileNo)
+    speak("sending message")
+    goback(4)
+    time.sleep(1)
+    keyEvent(3)
+    # open sms app
+    tapEvents(136, 2220)
+    #start chat
+    tapEvents(819, 2192)
+    # search mobile no
+    adbInput(mobileNo)
+    #tap on name
+    tapEvents(601, 574)
+    # tap on input
+    tapEvents(390, 2270)
+    #message
+    adbInput(message)
+    #send
+    tapEvents(960, 1225)
+    speak("message send successfully to "+name)
