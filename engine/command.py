@@ -144,6 +144,13 @@ def allCommands(message=1):
                                         
         #             whatsApp(contact_no, query, message, name)
 
+        elif "send email" in query or "email" in query:
+            from engine.features import sendEmail
+            
+            re_email = takecommand()
+            message=takecommand()
+            sendEmail(re_email, message)
+            speak("email sent successfully")
 
         else:
             from engine.features import web_search_assistant

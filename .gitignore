@@ -2,3 +2,5 @@
 /contacts.csv
 /engine/cookies.json
 /model
+/engine/config.py
+/test.py

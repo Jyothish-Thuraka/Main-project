@@ -1,5 +1,5 @@
 import logging
-
+import pywhatkit as pwk
 from shlex import quote
 import subprocess
 import webbrowser
@@ -9,15 +9,18 @@ import eel
 import os
 import sqlite3
 import pyaudio
+import pyautogui as autogui
 import struct
 import pvporcupine
 import pyautogui
 import pywhatkit as kit
 import re
+import smtplib
 import time
 import speech_recognition as sr
 from langchain_community.llms import CTransformers 
 from engine.config import ASSISTANT_NAME
+from engine.config import password
 from engine.command import speak
 from engine.help import extract_yt_term, remove_words
 
@@ -101,7 +104,7 @@ def hotword():
                 from engine.command import speak
                 print("hotword detected")
                 # pressing shorcut key win+j
-                import pyautogui as autogui
+
                 autogui.keyDown("win")
                 autogui.press("j")
                 time.sleep(2)
@@ -137,17 +140,17 @@ def whatsApp(mobile_no, message, flag, name):
 
     if flag == 'message':
         target_tab = 12
-        jarvis_message = "message send successfully to "+name
+        ai_message = "message send successfully to "+name
 
     elif flag == 'call':
         target_tab = 7
         message = ''
-        jarvis_message = "calling to "+name
+        ai_message = "calling to "+name
 
     else:
         target_tab = 6
         message = ''
-        jarvis_message = "staring video call with "+name
+        ai_message = "staring video call with "+name
 
 
     # Encode the message for URL
@@ -170,8 +173,12 @@ def whatsApp(mobile_no, message, flag, name):
         pyautogui.hotkey('tab')
 
     pyautogui.hotkey('enter')
-    speak(jarvis_message)
+    speak(ai_message)
 
+def sendEmail(re_mail,message):
+    pwk.send_mail("jyothishalways@gmail.com", password,"",message,re_mail,)
+
+    
 
 # #chatbot raa lucha
 # def chatBot(query):
