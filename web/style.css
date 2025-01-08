@@ -1,8 +1,9 @@
 
 body{
-    background-color: black;
+  background-color: black;
     overflow-y: hidden;
     overflow-x: hidden;
+    
 }
 
 .square{

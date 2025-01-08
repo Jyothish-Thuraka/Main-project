@@ -77,6 +77,16 @@ def PlayYoutube(query):
         speak("Playing "+search_term+" on YouTube")
         kit.playonyt(search_term)
 
+def spotifyAutomation():
+        query="Spotify"
+        speak(f"Opening Spotify")  
+        query = query.replace("open", "")
+        pyautogui.press("super")
+        pyautogui.typewrite(query)
+        pyautogui.sleep(2)
+        pyautogui.press("enter")
+        pyautogui.sleep(7)
+        pyautogui.press("space")
 
 def hotword():
     ls='siri'
@@ -180,44 +190,48 @@ def sendEmail(re_mail,message):
 
     
 
-# #chatbot raa lucha
-# def chatBot(query):
-#     user_input = query.lower()
-#     chatbot = hugchat.ChatBot(cookie_path="engine\\cookies.json")
-#     id = chatbot.new_conversation()
-#     chatbot.change_conversation(id)
-#     response =  chatbot.chat(user_input)
-#     print(response)
-#     speak(response)
-#     return response
-
-
-from langchain_community.llms import CTransformers
-#import CTransformers
-def web_search_assistant(query):
-    # Initialize the LLM
-    llm = CTransformers(
-        model='model\\llama-2-7b-chat.ggmlv3.q8_0.bin',
-        model_type='llama',
-        config={
-            'max_new_tokens': 256,
-            'temperature': 0.5  # Slightly increased temperature for more creative responses
-        }
-    )
-    
-    # Create a template for web search assistance
+#chatbot raa lucha
+def chatBot(query):
+    user_input = query.lower()
     prompt_template = f"""You are a helpful web search assistant. Please help with the following quaery in 30-50 words. query:
     
-Query: {query} 
+ Query: {user_input} 
 
-"""
+ """
 
-    # Get the response from the model
-    response = llm.predict(prompt_template)
+    chatbot = hugchat.ChatBot(cookie_path="engine\\cookies.json")
+    id = chatbot.new_conversation()
+    chatbot.change_conversation(id)
+    response =  chatbot.chat(prompt_template)
     print(response)
     speak(response)
-
     return response
+
+
+# from langchain_community.llms import CTransformers
+# #import CTransformers
+# def web_search_assistant(query):
+#     # Initialize the LLM
+#     llm = CTransformers(
+#         model='model\\llama-2-7b-chat.ggmlv3.q8_0.bin',
+#         model_type='llama',
+#         config={
+#             'max_new_tokens': 256,
+#             'temperature': 0.5  # Slightly increased temperature for more creative responses
+#         }
+#     )
+#     # Create a template for web search assistance
+#     prompt_template = f"""You are a helpful web search assistant. Please help with the following quaery in 30-50 words. query:
+    
+# Query: {query} 
+
+# """
+#     # Get the response from the model
+#     response = llm.predict(prompt_template)
+#     print(response)
+#     speak(response)
+
+#     return response
 
 
 

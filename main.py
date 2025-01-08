@@ -59,7 +59,7 @@ def get_contacts():
     return contacts
 
 @eel.expose
-def add_contact(name, mobile_no, email):
+def add_contact(name,mobile_no, email):
     conn = sqlite3.connect('Main.db')
     cursor = conn.cursor()
     cursor.execute('INSERT INTO contacts (name, mobile_no, email) VALUES (?, ?, ?)', 

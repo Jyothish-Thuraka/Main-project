@@ -358,18 +358,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
     contactForm.onsubmit = async function(e) {
         e.preventDefault();
-        const name = document.getElementById('contactName').value;
-        const mobile = document.getElementById('contactMobile').value;
-        const email = document.getElementById('contactEmail').value;
-
+        const name = document.getElementById('contactName').value.trim();
+        const mobile = document.getElementById('contactMobile').value.trim();
+        const email = document.getElementById('contactEmail').value.trim();
+    
+        // Basic validation
+        if (!name) {
+            alert('Name is required');
+            return;
+        }
+    
         try {
-            await eel.add_contact(name, mobile, email)();
-            contactForm.reset();
-            loadContacts();
+            const result = await eel.add_contact(name, mobile, email)();
+            if (result) {  // Assuming your Python function returns true on success
+                contactForm.reset();
+                loadContacts();
+                alert('Contact added successfully');
+            } else {
+                alert('Failed to add contact');
+            }
         } catch (error) {
             console.error('Error adding contact:', error);
+            alert('Error adding contact: ' + error.message);
         }
     }
+    
 
     window.editContact = function(id, name, mobile, email) {
         const row = document.querySelector(`tr:has(td:first-child:contains(${id}))`);

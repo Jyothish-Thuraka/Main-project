@@ -1,3 +1,5 @@
+import datetime
+
 import pyttsx3
 import speech_recognition as sr
 import eel
@@ -33,8 +35,12 @@ def takecommand():
         time.sleep(2)
         
     except Exception as e:
+        print("error")
+        eel.DisplayMessage("error")
+        speak("please try again")
+        time.sleep(2)
         return ""
-    
+
     return query.lower()
 
 # re=takecommand()
@@ -50,7 +56,7 @@ def allCommands(message=1):
         eel.senderText(query)
 
     try:
-
+   
         if "open" in query:
             from engine.features import openCommand
             openCommand(query)
@@ -58,6 +64,15 @@ def allCommands(message=1):
         elif "on youtube" in query:
             from engine.features import PlayYoutube
             PlayYoutube(query)
+        elif "time" in query:
+             now_time=datetime.datetime.now().strftime("%H:%M:%S")
+             speak("the time is "+now_time)
+        elif "date" in query:
+             now_date=datetime.datetime.now().strftime("%d/%m/%Y")
+             speak("the date is "+now_date)
+        elif "music" in query:
+            from engine.features import spotifyAutomation
+            spotifyAutomation()
 
         elif "send message" in query or "message" in query:
             from engine.features import findContact, whatsApp, makeCall, sendMessage
@@ -146,16 +161,17 @@ def allCommands(message=1):
 
         elif "send email" in query or "email" in query:
             from engine.features import sendEmail
-            
             re_email = takecommand()
             message=takecommand()
             sendEmail(re_email, message)
             speak("email sent successfully")
 
         else:
-            from engine.features import web_search_assistant
+            from engine.features import chatBot
             print("i run")
-            web_search_assistant(query)
+            speak("searching!Hold for a moment")
+            chatBot(query)
+            #web_search_assistant(query)
             
             
     except:
