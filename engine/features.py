@@ -65,7 +65,7 @@ def openCommand(query):
                         pyautogui.sleep(2)
                         pyautogui.press("enter")
 
-
+            
                 
         except:
             speak("some thing went wrong")
@@ -89,6 +89,7 @@ def spotifyAutomation():
         pyautogui.press("space")
 
 def hotword():
+    
     ls='siri'
     ls2="Siri"
     ls3="Amazon"
@@ -96,12 +97,12 @@ def hotword():
     r = sr.Recognizer()
     while True:
         with sr.Microphone() as source:
-            print('hotword........')
+            #print('hotword........')
             r.pause_threshold = 1
             r.adjust_for_ambient_noise(source)
             audio = r.listen(source)
         try:
-            print('recognizing')
+            #print('recognizing')
             query = r.recognize_google(audio, language='en-in')
             print(f"user said: {query}")
 
@@ -109,7 +110,9 @@ def hotword():
             print(qu)
             qu.lower()
             print(type(qu))
-
+            if "close" in qu:
+                print("class")
+                closeApp()
             if ls in qu or ls2 in qu or ls3 in qu or ls4 in qu:
                 from engine.command import speak
                 print("hotword detected")
@@ -119,10 +122,20 @@ def hotword():
                 autogui.press("j")
                 time.sleep(2)
                 autogui.keyUp("win")
+
             else:
                 print("hotword not detected")
+            
         except Exception as e:
             print("error")
+
+def closeApp():
+   
+        speak("closing the application")
+
+
+        time.sleep(0.5)  # Add a small delay if needed
+        pyautogui.hotkey('alt', 'f4')
 
 
 #find contacts
@@ -195,9 +208,9 @@ def chatBot(query):
     user_input = query.lower()
     prompt_template = f"""You are a helpful web search assistant. Please help with the following quaery in 30-50 words. query:
     
- Query: {user_input} 
+            Query: {user_input} 
 
- """
+        """
 
     chatbot = hugchat.ChatBot(cookie_path="engine\\cookies.json")
     id = chatbot.new_conversation()

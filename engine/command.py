@@ -20,7 +20,7 @@ def takecommand():
 
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        print('listening....')
+        print('say...listening....')
         eel.DisplayMessage('listening....')
         r.pause_threshold = 1
         r.adjust_for_ambient_noise(source)
@@ -36,8 +36,8 @@ def takecommand():
         
     except Exception as e:
         print("error")
-        eel.DisplayMessage("error")
-        speak("please try again")
+        #eel.DisplayMessage("error")
+        speak("I cant reconize the text!. please try again")
         time.sleep(2)
         return ""
 
@@ -105,7 +105,8 @@ def allCommands(message=1):
                 message = 'video call'                  
                 whatsApp(contact_no, query, message, name)
             else:
-                        speak("please try again")
+                    speak("please try again")
+                    
         elif "call" in query:
             from engine.features import findContact, whatsApp, makeCall, sendMessage
             contact_no, name = findContact(query)
@@ -165,7 +166,9 @@ def allCommands(message=1):
             message=takecommand()
             sendEmail(re_email, message)
             speak("email sent successfully")
-
+        elif "close" in query or "close the application" in query:
+            from engine.features import closeApp
+            closeApp(query)
         else:
             from engine.features import chatBot
             print("i run")
