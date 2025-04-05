@@ -160,15 +160,20 @@ def allCommands(message=1):
                                         
         #             whatsApp(contact_no, query, message, name)
 
-        elif "send email" in query or "email" in query:
-            from engine.features import sendEmail
-            re_email = takecommand()
+        elif "send email" in query or "email" in query or "mail" in query:
+            
+            from engine.features import sendEmail,findEmail
+            re_email =findEmail(query)
+            speak("which message you want to send")
             message=takecommand()
             sendEmail(re_email, message)
             speak("email sent successfully")
         elif "close" in query or "close the application" in query:
             from engine.features import closeApp
             closeApp(query)
+        elif len(query)==0:
+             speak("Empty query")
+             
         else:
             from engine.features import chatBot
             print("i run")

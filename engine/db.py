@@ -7,6 +7,8 @@ cursor = conn.cursor()
 
 # query = "CREATE TABLE IF NOT EXISTS sys_command(id integer primary key, name VARCHAR(100), path VARCHAR(1000))"
 # cursor.execute(query)
+query = "CREATE TABLE IF NOT EXISTS mails(id integer primary key, name VARCHAR(100), mail_id VARCHAR(1000))"
+cursor.execute(query)
 
 # query="INSERT INTO sys_command VALUES (null,'word','C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE')"
 # cursor.execute(query)
@@ -21,6 +23,7 @@ cursor = conn.cursor()
 
 # Create a table with the desired columns
 cursor.execute('''CREATE TABLE IF NOT EXISTS contacts (id integer primary key, name VARCHAR(200), mobile_no VARCHAR(255), email VARCHAR(255) NULL)''')
+
 
 # # Specify the column indices you want to import (0-based index)
 # # Example: Importing the 1st and 3rd columns

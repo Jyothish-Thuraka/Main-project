@@ -30,11 +30,11 @@
         <section id="Oval" class="mb-4">
             <div class="row">
                 <div class="col-md-1"></div>
-                <div class="col-md-10" >
+                <div class="col-md-10">
                     <div class="d-flex justify-content-center align-items-center" style="height: 80vh;" hidden>
                         <canvas id="canvasOne" width="700" height="420" style="position: absolute;"></canvas>
 
-                        <div id="JarvisHood" >
+                        <div id="JarvisHood">
 
                             <div class="square">
                                 <span class="circle"></span>
@@ -65,7 +65,7 @@
                                     <div class="modal-content">
                                         <span class="close">&times;</span>
                                         <h2 style="color: #4CAF50; margin-bottom: 20px;">Settings Manager</h2>
-                                        
+
                                         <!-- Tab Navigation -->
                                         <div class="tab-nav">
                                             <button class="tab-btn active" data-tab="websites">
@@ -74,8 +74,12 @@
                                             <button class="tab-btn" data-tab="contacts">
                                                 <i class="bi bi-person-lines-fill"></i> Contacts
                                             </button>
+                                            <button class="tab-btn" data-tab="emails">
+                                                <i class="bi bi-envelope"></i> Emails
+                                            </button>
+
                                         </div>
-                                
+
                                         <!-- Websites Tab -->
                                         <div class="tab-content active" id="websitesTab">
                                             <form id="websiteForm">
@@ -85,7 +89,7 @@
                                                     <i class="bi bi-plus-lg"></i> Add Website
                                                 </button>
                                             </form>
-                                
+
                                             <table id="websitesTable">
                                                 <thead>
                                                     <tr>
@@ -99,18 +103,18 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                
+
                                         <!-- Contacts Tab -->
                                         <div class="tab-content" id="contactsTab">
                                             <form id="contactForm">
                                                 <input type="text" id="contactName" placeholder="Contact Name" required>
-                                                <input type="tel" id="contactMobile" placeholder="Mobile Number" required>
+                                                <input type="tel" id="contactMobile" placeholder="Mobile Number"
+                                                    required>
                                                 <input type="email" id="contactEmail" placeholder="Email (optional)">
                                                 <button type="submit" class="btn-add">
                                                     <i class="bi bi-plus-lg"></i> Add Contact
                                                 </button>
                                             </form>
-                                
                                             <table id="contactsTable">
                                                 <thead>
                                                     <tr>
@@ -125,9 +129,33 @@
                                                 </tbody>
                                             </table>
                                         </div>
+                                        <!-- Emails Tab -->
+                                        <div class="tab-content" id="emailsTab">
+                                            <form id="emailForm">
+                                                <input type="text" id="emailName" placeholder="Contact Name" required>
+                                                <input type="email" id="emailAddress" placeholder="Email Address"
+                                                    required>
+                                                <button type="submit" class="btn-add">
+                                                    <i class="bi bi-plus-lg"></i> Add Email
+                                                </button>
+                                            </form>
+                                            <table id="emailsTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Name</th>
+                                                        <th>Email</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="emailsTableBody">
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
                                     </div>
                                 </div>
-        
+
                             </div>
                         </div>
                     </div>

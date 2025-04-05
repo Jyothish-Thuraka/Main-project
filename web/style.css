@@ -476,6 +476,61 @@ tr:hover {
 }
 
 
+#emailsTab .add-form {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+#emailsTab .add-form input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  flex: 1;
+}
+
+#emailsTab .add-form button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#emailsTab .data-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+#emailsTab table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#emailsTab th,
+#emailsTab td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+#emailsTab th {
+  background-color: #f5f5f5;
+}
+
+#emailsTab td button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+#emailsTab td button:hover {
+  color: #4CAF50;
+}
+
 
 @keyframes rotate {
   to {

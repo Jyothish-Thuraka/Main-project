@@ -55,17 +55,22 @@
 #              now_time=datetime.datetime.now().strftime("%H:%M:%S")
 #              print("the time is "+now_time)
 
-import pyautogui
+# import pyautogui
 
 
-def spotifyAutomation():
-        query="Spotify"
-        #speak(f"Opening Spotify")  
-        query = query.replace("open", "")
-        pyautogui.press("super")
-        pyautogui.typewrite(query)
-        pyautogui.sleep(2)
-        pyautogui.press("enter")
-        pyautogui.sleep(7)
-        pyautogui.press("space")
-spotifyAutomation()
+# def spotifyAutomation():
+#         query="Spotify"
+#         #speak(f"Opening Spotify")  
+#         query = query.replace("open", "")
+#         pyautogui.press("super")
+#         pyautogui.typewrite(query)
+#         pyautogui.sleep(2)
+#         pyautogui.press("enter")
+#         pyautogui.sleep(7)
+#         pyautogui.press("space")
+# spotifyAutomation()
+
+import subprocess
+
+
+subprocess.call([r'dev.bat'])

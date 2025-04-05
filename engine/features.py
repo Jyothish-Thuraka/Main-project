@@ -94,6 +94,7 @@ def hotword():
     ls2="Siri"
     ls3="Amazon"
     ls4="open"
+    
     r = sr.Recognizer()
     while True:
         with sr.Microphone() as source:
@@ -157,21 +158,39 @@ def findContact(query):
         return mobile_number_str, query
     except:
         speak('not exist in contacts')
+        return 0, 
+
+
+def findEmail(query):
+    words_to_remove = [ASSISTANT_NAME, 'send', 'email', 'to', 'mail', 'message','a']
+    query = remove_words(query, words_to_remove)
+
+    try:
+        query = query.strip().lower()
+        cursor.execute("SELECT mail_id FROM mails WHERE LOWER(name) LIKE ? OR LOWER(name) LIKE ?", 
+                      ('%' + query + '%', query + '%'))
+        results = cursor.fetchall()
+        print(results[0][0])
+        email_str = str(results[0][0])
+        return email_str, query
+    except:
+        speak('not exist in email contacts')
         return 0, 0
+
     
 def whatsApp(mobile_no, message, flag, name):
 
     if flag == 'message':
-        target_tab = 12
+        target_tab = 19
         ai_message = "message send successfully to "+name
 
     elif flag == 'call':
-        target_tab = 7
+        target_tab = 14
         message = ''
         ai_message = "calling to "+name
 
     else:
-        target_tab = 6
+        target_tab = 13
         message = ''
         ai_message = "staring video call with "+name
 
@@ -206,6 +225,8 @@ def sendEmail(re_mail,message):
 #chatbot raa lucha
 def chatBot(query):
     user_input = query.lower()
+
+         
     prompt_template = f"""You are a helpful web search assistant. Please help with the following quaery in 30-50 words. query:
     
             Query: {user_input} 

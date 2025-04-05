@@ -427,3 +427,109 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+
+
+// Add this after your existing contacts code in settings.js
+
+// Email CRUD Operations
+document.getElementById('emailForm').onsubmit = async function(e) {
+    e.preventDefault();
+    const name = document.getElementById('emailName').value;
+    const email = document.getElementById('emailAddress').value;
+
+    try {
+        await eel.add_mail_to_db(name, email)();
+        emailForm.reset();
+        loadEmails();
+    } catch (error) {
+        console.error('Error adding email:', error);
+    }
+}
+
+async function loadEmails() {
+    try {
+        const emails = await eel.get_mails_from_db()();
+        updateEmailsTable(emails);
+    } catch (error) {
+        console.error('Error loading emails:', error);
+    }
+}
+
+function updateEmailsTable(emails) {
+    const tableBody = document.getElementById('emailsTableBody');
+    tableBody.innerHTML = '';
+    
+    emails.forEach(email => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${email[0]}</td>
+            <td>${email[1]}</td>
+            <td>${email[2]}</td>
+            <td>
+                <button class="btn-edit" onclick="editEmail(${email[0]}, '${email[1]}', '${email[2]}')">
+                    <i class="bi bi-pencil"></i> Edit
+                </button>
+                <button class="btn-delete" onclick="deleteEmail(${email[0]})">
+                    <i class="bi bi-trash"></i> Delete
+                </button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+window.editEmail = function(id, name, email) {
+    const row = document.querySelector(`tr:has(td:first-child:contains(${id}))`);
+    row.classList.add('edit-mode');
+    row.innerHTML = `
+        <td>${id}</td>
+        <td><input type="text" value="${name}" id="edit-email-name-${id}"></td>
+        <td><input type="email" value="${email}" id="edit-email-address-${id}"></td>
+        <td>
+            <button class="btn-edit" onclick="saveEmail(${id})">
+                <i class="bi bi-check-lg"></i> Save
+            </button>
+            <button class="btn-delete" onclick="loadEmails()">
+                <i class="bi bi-x-lg"></i> Cancel
+            </button>
+        </td>
+    `;
+}
+
+window.saveEmail = async function(id) {
+    const name = document.getElementById(`edit-email-name-${id}`).value;
+    const email = document.getElementById(`edit-email-address-${id}`).value;
+    
+    try {
+        await eel.update_mail_in_db(id, name, email)();
+        loadEmails();
+    } catch (error) {
+        console.error('Error updating email:', error);
+    }
+}
+
+window.deleteEmail = async function(id) {
+    if (confirm('Are you sure you want to delete this email?')) {
+        try {
+            await eel.delete_mail_from_db(id)();
+            loadEmails();
+        } catch (error) {
+            console.error('Error deleting email:', error);
+        }
+    }
+}
+
+// Add this to your existing DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', function() {
+    // Your existing code...
+
+    // Add email tab loading
+    const emailTab = document.querySelector('[data-tab="emails"]');
+    if (emailTab) {
+        emailTab.addEventListener('click', () => {
+            loadEmails();
+        });
+    }
+});
+
