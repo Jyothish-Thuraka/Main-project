@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Get DOM elements
     const modal = document.getElementById('settingsModal');
     const settingsBtn = document.getElementById('SettingsBtn');
@@ -213,15 +213,44 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
             });
-            document.getElementById(`${btn.dataset.tab}Tab`).classList.add('active');
+            
+            const selectedTab = document.getElementById(`${btn.dataset.tab}Tab`);
+            selectedTab.classList.add('active');
+            
+            // Load data based on selected tab
+            switch(btn.dataset.tab) {
+                case 'websites':
+                    loadWebsites();
+                    break;
+                case 'contacts':
+                    loadContacts();
+                    break;
+                case 'emails':
+                    loadEmails();
+                    break;
+            }
         });
     });
 
     // Modal controls
     settingsBtn.onclick = function() {
         modal.style.display = "block";
-        loadWebsites();
-        loadContacts();
+        const activeTab = document.querySelector('.tab-btn.active');
+        if (activeTab) {
+            switch(activeTab.dataset.tab) {
+                case 'websites':
+                    loadWebsites();
+                    break;
+                case 'contacts':
+                    loadContacts();
+                    break;
+                case 'emails':
+                    loadEmails();
+                    break;
+            }
+        } else {
+            loadWebsites();
+        }
     }
 
     closeBtn.onclick = function() {
@@ -233,7 +262,6 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.style.display = "none";
         }
     }
-
     // Websites CRUD Operations
     async function loadWebsites() {
         try {
@@ -247,9 +275,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateWebsitesTable(websites) {
         const tableBody = document.getElementById('websitesTableBody');
         tableBody.innerHTML = '';
-        
+
         websites.forEach(website => {
             const row = document.createElement('tr');
+            row.setAttribute('data-id', website.id);
             row.innerHTML = `
                 <td>${website.id}</td>
                 <td>${website.name}</td>
@@ -282,27 +311,32 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     window.editWebsite = function(id, name, url) {
-        const row = document.querySelector(`tr:has(td:first-child:contains(${id}))`);
-        row.classList.add('edit-mode');
-        row.innerHTML = `
-            <td>${id}</td>
-            <td><input type="text" value="${name}" id="edit-name-${id}"></td>
-            <td><input type="url" value="${url}" id="edit-url-${id}"></td>
-            <td>
-                <button class="btn-edit" onclick="saveWebsite(${id})">
-                    <i class="bi bi-check-lg"></i> Save
-                </button>
-                <button class="btn-delete" onclick="loadWebsites()">
-                    <i class="bi bi-x-lg"></i> Cancel
-                </button>
-            </td>
-        `;
+        const websitesTab = document.getElementById('websitesTab');
+        if (!websitesTab.classList.contains('active')) return;
+
+        const row = document.querySelector(`#websitesTableBody tr[data-id="${id}"]`);
+        if (row) {
+            row.classList.add('edit-mode');
+            row.innerHTML = `
+                <td>${id}</td>
+                <td><input type="text" value="${name}" id="edit-name-${id}"></td>
+                <td><input type="url" value="${url}" id="edit-url-${id}"></td>
+                <td>
+                    <button class="btn-edit" onclick="saveWebsite(${id})">
+                        <i class="bi bi-check-lg"></i> Save
+                    </button>
+                    <button class="btn-delete" onclick="loadWebsites()">
+                        <i class="bi bi-x-lg"></i> Cancel
+                    </button>
+                </td>
+            `;
+        }
     }
 
     window.saveWebsite = async function(id) {
         const name = document.getElementById(`edit-name-${id}`).value;
         const url = document.getElementById(`edit-url-${id}`).value;
-        
+
         try {
             await eel.update_website(id, name, url)();
             loadWebsites();
@@ -338,6 +372,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         contacts.forEach(contact => {
             const row = document.createElement('tr');
+            row.setAttribute('data-id', contact.id);
             row.innerHTML = `
                 <td>${contact.id}</td>
                 <td>${contact.name}</td>
@@ -356,51 +391,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    contactForm.onsubmit = async function(e) {
-        e.preventDefault();
-        const name = document.getElementById('contactName').value.trim();
-        const mobile = document.getElementById('contactMobile').value.trim();
-        const email = document.getElementById('contactEmail').value.trim();
-    
-        // Basic validation
-        if (!name) {
-            alert('Name is required');
-            return;
-        }
-    
-        try {
-            const result = await eel.add_contact(name, mobile, email)();
-            if (result) {  // Assuming your Python function returns true on success
-                contactForm.reset();
-                loadContacts();
-                alert('Contact added successfully');
-            } else {
-                alert('Failed to add contact');
-            }
-        } catch (error) {
-            console.error('Error adding contact:', error);
-            alert('Error adding contact: ' + error.message);
-        }
-    }
-    
-
     window.editContact = function(id, name, mobile, email) {
-        const row = document.querySelector(`tr:has(td:first-child:contains(${id}))`);
-        row.classList.add('edit-mode');
-        row.innerHTML = `
-            <td>${id}</td>
-            <td><input type="text" value="${name}" id="edit-contact-name-${id}"></td>
-            <td><input type="tel" value="${mobile}" id="edit-contact-mobile-${id}"></td>
-            <td><input type="email" value="${email}" id="edit-contact-email-${id}"></td>
-            <td>
-                <button class="btn-edit" onclick="saveContact(${id})">
-                    <i class="bi bi-check-lg"></i> Save
-                </button>
-                <button class="btn-delete" onclick="loadContacts()">
-                    <i class="bi bi-x-lg"></i> Cancel
-                </button>
-            </td>
-        `;
+        const contactsTab = document.getElementById('contactsTab');
+        if (!contactsTab.classList.contains('active')) return;
+
+        const row = document.querySelector(`#contactsTableBody tr[data-id="${id}"]`);
+        if (row) {
+            row.classList.add('edit-mode');
+            row.innerHTML = `
+                <td>${id}</td>
+                <td><input type="text" value="${name}" id="edit-contact-name-${id}"></td>
+                <td><input type="tel" value="${mobile}" id="edit-contact-mobile-${id}"></td>
+                <td><input type="email" value="${email}" id="edit-contact-email-${id}"></td>
+                <td>
+                    <button class="btn-edit" onclick="saveContact(${id})">
+                        <i class="bi bi-check-lg"></i> Save
+                    </button>
+                    <button class="btn-delete" onclick="loadContacts()">
+                        <i class="bi bi-x-lg"></i> Cancel
+                    </button>
+                </td>
+            `;
+        }
     }
 
     window.saveContact = async function(id) {
@@ -426,110 +438,130 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
-});
 
-
-
-// Add this after your existing contacts code in settings.js
-
-// Email CRUD Operations
-document.getElementById('emailForm').onsubmit = async function(e) {
-    e.preventDefault();
-    const name = document.getElementById('emailName').value;
-    const email = document.getElementById('emailAddress').value;
-
-    try {
-        await eel.add_mail_to_db(name, email)();
-        emailForm.reset();
-        loadEmails();
-    } catch (error) {
-        console.error('Error adding email:', error);
-    }
-}
-
-async function loadEmails() {
-    try {
-        const emails = await eel.get_mails_from_db()();
-        updateEmailsTable(emails);
-    } catch (error) {
-        console.error('Error loading emails:', error);
-    }
-}
-
-function updateEmailsTable(emails) {
-    const tableBody = document.getElementById('emailsTableBody');
-    tableBody.innerHTML = '';
+    contactForm.onsubmit = async function(e) {
+        e.preventDefault();
+        const name = document.getElementById('contactName').value.trim();
+        const mobile = document.getElementById('contactMobile').value.trim();
+        const email = document.getElementById('contactEmail').value.trim();
     
-    emails.forEach(email => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${email[0]}</td>
-            <td>${email[1]}</td>
-            <td>${email[2]}</td>
-            <td>
-                <button class="btn-edit" onclick="editEmail(${email[0]}, '${email[1]}', '${email[2]}')">
-                    <i class="bi bi-pencil"></i> Edit
-                </button>
-                <button class="btn-delete" onclick="deleteEmail(${email[0]})">
-                    <i class="bi bi-trash"></i> Delete
-                </button>
-            </td>
-        `;
-        tableBody.appendChild(row);
-    });
-}
-
-window.editEmail = function(id, name, email) {
-    const row = document.querySelector(`tr:has(td:first-child:contains(${id}))`);
-    row.classList.add('edit-mode');
-    row.innerHTML = `
-        <td>${id}</td>
-        <td><input type="text" value="${name}" id="edit-email-name-${id}"></td>
-        <td><input type="email" value="${email}" id="edit-email-address-${id}"></td>
-        <td>
-            <button class="btn-edit" onclick="saveEmail(${id})">
-                <i class="bi bi-check-lg"></i> Save
-            </button>
-            <button class="btn-delete" onclick="loadEmails()">
-                <i class="bi bi-x-lg"></i> Cancel
-            </button>
-        </td>
-    `;
-}
-
-window.saveEmail = async function(id) {
-    const name = document.getElementById(`edit-email-name-${id}`).value;
-    const email = document.getElementById(`edit-email-address-${id}`).value;
+        if (!name) {
+            alert('Name is required');
+            return;
+        }
     
-    try {
-        await eel.update_mail_in_db(id, name, email)();
-        loadEmails();
-    } catch (error) {
-        console.error('Error updating email:', error);
-    }
-}
-
-window.deleteEmail = async function(id) {
-    if (confirm('Are you sure you want to delete this email?')) {
         try {
-            await eel.delete_mail_from_db(id)();
-            loadEmails();
+            const result = await eel.add_contact(name, mobile, email)();
+            if (result) {
+                this.reset();
+                loadContacts();
+                alert('Contact added successfully');
+            } else {
+                alert('Failed to add contact');
+            }
         } catch (error) {
-            console.error('Error deleting email:', error);
+            console.error('Error adding contact:', error);
+            alert('Error adding contact: ' + error.message);
         }
     }
-}
 
-// Add this to your existing DOMContentLoaded event listener
-document.addEventListener('DOMContentLoaded', function() {
-    // Your existing code...
+    // Email CRUD Operations
+    async function loadEmails() {
+        try {
+            const emails = await eel.get_mails_from_db()();
+            updateEmailsTable(emails);
+        } catch (error) {
+            console.error('Error loading emails:', error);
+        }
+    }
 
-    // Add email tab loading
-    const emailTab = document.querySelector('[data-tab="emails"]');
-    if (emailTab) {
-        emailTab.addEventListener('click', () => {
-            loadEmails();
+    function updateEmailsTable(emails) {
+        const tableBody = document.getElementById('emailsTableBody');
+        tableBody.innerHTML = '';
+
+        emails.forEach(email => {
+            const row = document.createElement('tr');
+            row.setAttribute('data-id', email[0]);
+            row.innerHTML = `
+                <td>${email[0]}</td>
+                <td>${email[1]}</td>
+                <td>${email[2]}</td>
+                <td>
+                    <button class="btn-edit" onclick="editEmail(${email[0]}, '${email[1]}', '${email[2]}')">
+                        <i class="bi bi-pencil"></i> Edit
+                    </button>
+                    <button class="btn-delete" onclick="deleteEmail(${email[0]})">
+                        <i class="bi bi-trash"></i> Delete
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
         });
     }
-});
 
+    window.editEmail = function(id, name, email) {
+        const emailsTab = document.getElementById('emailsTab');
+        if (!emailsTab.classList.contains('active')) return;
+
+        const row = document.querySelector(`#emailsTableBody tr[data-id="${id}"]`);
+        if (row) {
+            row.classList.add('edit-mode');
+            row.innerHTML = `
+                <td>${id}</td>
+                <td><input type="text" value="${name}" id="edit-email-name-${id}"></td>
+                <td><input type="email" value="${email}" id="edit-email-address-${id}"></td>
+                <td>
+                    <button class="btn-edit" onclick="saveEmail(${id})">
+                        <i class="bi bi-check-lg"></i> Save
+                    </button>
+                    <button class="btn-delete" onclick="loadEmails()">
+                        <i class="bi bi-x-lg"></i> Cancel
+                    </button>
+                </td>
+            `;
+        }
+    }
+
+    window.saveEmail = async function(id) {
+        const name = document.getElementById(`edit-email-name-${id}`).value;
+        const email = document.getElementById(`edit-email-address-${id}`).value;
+        
+        try {
+            await eel.update_mail_in_db(id, name, email)();
+            loadEmails();
+        } catch (error) {
+            console.error('Error updating email:', error);
+        }
+    }
+
+    window.deleteEmail = async function(id) {
+        if (confirm('Are you sure you want to delete this email?')) {
+            try {
+                await eel.delete_mail_from_db(id)();
+                loadEmails();
+            } catch (error) {
+                console.error('Error deleting email:', error);
+            }
+        }
+    }
+
+    document.getElementById('emailForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const name = document.getElementById('emailName').value.trim();
+        const email = document.getElementById('emailAddress').value.trim();
+
+        if (!name || !email) {
+            alert('Both name and email are required');
+            return;
+        }
+
+        try {
+            await eel.add_mail_to_db(name, email)();
+            this.reset();
+            loadEmails();
+        } catch (error) {
+            console.error('Error adding email:', error);
+            alert('Error adding email');
+        }
+    }
+});

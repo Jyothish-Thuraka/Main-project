@@ -1,5 +1,4 @@
 import datetime
-
 import pyttsx3
 import speech_recognition as sr
 import eel
@@ -60,10 +59,14 @@ def allCommands(message=1):
         if "open" in query:
             from engine.features import openCommand
             openCommand(query)
-
         elif "on youtube" in query:
             from engine.features import PlayYoutube
             PlayYoutube(query)
+        # In your command processing section
+        elif "tell me a joke" in query or "say a joke" in query or "make me laugh" in query:
+            from engine.features import tell_joke
+            tell_joke()
+
         elif "time" in query:
              now_time=datetime.datetime.now().strftime("%H:%M:%S")
              speak("the time is "+now_time)

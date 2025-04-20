@@ -70,6 +70,37 @@ def openCommand(query):
         except:
             speak("some thing went wrong")
 
+import random
+import requests
+
+def tell_joke():
+    try:
+        # Using an API to fetch jokes
+        response = requests.get("https://official-joke-api.appspot.com/random/joke")
+        if response.status_code == 200:
+            joke_data = response.json()
+            setup = joke_data['setup']
+            punchline = joke_data['punchline']
+            
+            # First speak the setup
+            speak(setup)
+            # Small pause for effect
+            time.sleep(2)
+            # Then deliver the punchline
+            speak(punchline)
+        else:
+            # Fallback jokes if API fails
+            jokes = [
+                "Why don't programmers like nature? It has too many bugs!",
+                "What do you call a computer that sings? A Dell!",
+                "Why did the programmer quit his job? Because he didn't get arrays!",
+                "What's a programmer's favorite place? The Cookie Store!"
+            ]
+            selected_joke = random.choice(jokes)
+            speak(selected_joke)
+            
+    except Exception as e:
+        speak("Sorry, I'm not feeling very funny right now!")
 
 
 def PlayYoutube(query):

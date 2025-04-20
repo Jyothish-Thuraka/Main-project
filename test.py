@@ -71,6 +71,4 @@
 # spotifyAutomation()
 
 import subprocess
-
-
 subprocess.call([r'dev.bat'])
