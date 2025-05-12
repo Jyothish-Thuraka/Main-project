@@ -1,0 +1,12 @@
+pip install pyttsx3==2.90
+pip install SpeechRecognition==3.10.0
+pip install eel==0.14.0
+pip install playsound==1.2.2
+pip install pyaudio==0.2.13
+pip install pyautogui==0.9.54
+pip install pvporcupine==2.2.0
+pip install pywhatkit==5.4
+pip install requests==2.31.0
+pip install hugchat==0.3.8
+pip install langchain-community==0.0.16
+pip install CTransformers==0.2.27
